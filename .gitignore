@@ -1,0 +1,7 @@
+.idea/
+.vscode/
+*venv/
+*.pyc
+__pycache__/
+db.*
+.mypy_cache/
