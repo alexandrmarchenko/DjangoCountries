@@ -1,0 +1,39 @@
+{% extends "main.html" %}
+
+{% block title %}
+    Список стран
+{% endblock title %}
+
+{% block content %}
+    <div>
+        {% for letter in alphabet %}
+        <a href="/country-by-letter/{{letter}}">{{letter}}</a>
+        {%endfor%}
+    </div>
+    <div>
+        <ol>
+            {% for country in countries %}
+                <li> <a href="/country/{{country.country}}">{{country.country}}</a></li>
+            {%endfor%}
+        </ol>
+    </div>
+{% if countries.paginator %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if countries.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ countries.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ countries.number }} of {{ countries.paginator.num_pages }}.
+            </span>
+
+            {% if countries.has_next %}
+                <a href="?page={{ countries.next_page_number }}">next</a>
+                <a href="?page={{ countries.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{%endif%}
+{% endblock content %}

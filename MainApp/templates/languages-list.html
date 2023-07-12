@@ -1,0 +1,35 @@
+{% extends "main.html" %}
+
+{% block title %}
+    Список языков
+{% endblock title %}
+
+{% block content %}
+    <div>
+        <ol>
+            {% for lang in languages %}
+                <li> <a href="/language/{{lang}}">{{lang}}</a></li>
+            {%endfor%}
+        </ol>
+    </div>
+
+{% if languages.paginator %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if languages.has_previous %}
+                <a href="?page=1">&laquo; first</a>
+                <a href="?page={{ languages.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ languages.number }} of {{ languages.paginator.num_pages }}.
+            </span>
+
+            {% if languages.has_next %}
+                <a href="?page={{ languages.next_page_number }}">next</a>
+                <a href="?page={{ languages.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+{%endif%}
+{% endblock content %}
