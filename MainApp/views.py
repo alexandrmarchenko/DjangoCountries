@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import render
 import json
+from MainApp.models import Language, Country
 
 
 def main(request):
@@ -11,20 +12,16 @@ def main(request):
 
 
 def countries_list(request):
-    with open('country-by-languages.json') as json_file:
-        countries = json.load(json_file)
+    countries = Country.objects.all()
     paginator = Paginator(countries, 20)
     page_number = request.GET.get("page")
     countries = paginator.get_page(page_number)
     context = {'countries': countries, 'alphabet': ascii_uppercase}
-    print(countries.paginator)
     return render(request, 'countries-list.html', context)
 
 
 def countries_by_letter(request, letter):
-    with open('country-by-languages.json') as json_file:
-        countries = json.load(json_file)
-    countries = [c for c in countries if c["country"].upper().startswith(letter.upper())]
+    countries = Country.objects.filter(name__startswith=letter)
     paginator = Paginator(countries, 20)
     page_number = request.GET.get("page")
     countries = paginator.get_page(page_number)
@@ -33,12 +30,7 @@ def countries_by_letter(request, letter):
 
 
 def languages_list(request):
-    languages = []
-    with open('country-by-languages.json') as json_file:
-        countries = json.load(json_file)
-    for country in countries:
-        languages += country["languages"]
-    languages = sorted(set(languages))
+    languages = Language.objects.all()
     paginator = Paginator(languages, 20)
     page_number = request.GET.get("page")
     languages = paginator.get_page(page_number)
@@ -47,16 +39,14 @@ def languages_list(request):
 
 
 def country(request, country):
-    with open('country-by-languages.json') as json_file:
-        countries = json.load(json_file)
-    c = next((c for c in countries if c["country"] == country), None)
-    context = {'country': c}
+    country = Country.objects.get(id=country)
+    languages = country.languages.all()
+    context = {'country': country, 'languages': languages}
     return render(request, 'country.html', context)
 
 
 def lang(request, lang):
-    with open('country-by-languages.json') as json_file:
-        countries = json.load(json_file)
-    countries = (c["country"] for c in countries if lang in c["languages"])
-    context = {'lang': lang, 'countries': countries}
+    language = Language.objects.get(id=lang)
+    countries = Country.objects.filter(languages__id=lang)
+    context = {'lang': language, 'countries': countries}
     return render(request, 'lang.html', context)
