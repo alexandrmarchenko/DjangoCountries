@@ -1,19 +1,19 @@
 {% extends "main.html" %}
 
 {% block title %}
-    Список стран
+Список стран
 {% endblock title %}
 
 {% block content %}
     <div>
         {% for letter in alphabet %}
-        <a href="/country-by-letter/{{letter}}">{{letter}}</a>
+        <a href="{% url 'countries_by_letter' letter %}">{{letter}}</a>
         {%endfor%}
     </div>
     <div>
         <ol>
             {% for country in countries %}
-                <li> <a href="/country/{{country.country}}">{{country.country}}</a></li>
+            <li><a href="{% url 'country_detail' country.id %}">{{country.name}}</a></li>
             {%endfor%}
         </ol>
     </div>

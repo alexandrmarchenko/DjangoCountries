@@ -8,7 +8,7 @@
     <div>
         <ol>
             {% for lang in languages %}
-                <li> <a href="/language/{{lang}}">{{lang}}</a></li>
+            <li><a href="{% url 'language_detail' lang.id %}">{{lang.name}}</a></li>
             {%endfor%}
         </ol>
     </div>

@@ -1,20 +1,20 @@
 {% extends "main.html" %}
 
 {% block title %}
-    {{lang}}
+{{lang.name}}
 {% endblock title %}
 
 {% block content %}
     <div>
-        <H1>{{lang}}</H1>
+        <H1>{{lang.name}}</H1>
         Список стран <br>
         <ul>
             {% for country in countries %}
-                <li> <a href="/country/{{country}}">{{country}}</a></li>
+            <li><a href="{% url 'country_detail' country.id %}">{{country.name}}</a></li>
             {%endfor%}
         </ul>
     </div>
     <div>
-        <a href="/languages_list/">К списку языков</a>
+        <a href="{% url 'languages_list' %}">К списку языков</a>
     </div>
 {% endblock content %}
